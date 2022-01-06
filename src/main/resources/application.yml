@@ -1,0 +1,18 @@
+spring:
+  jpa:
+    database: postgresql
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: ivanlyschev
+    password: ivan2000
+logging:
+  level:
+    org.hibernate: INFO
+    org.hibernate.SQL: DEBUG
+    org.hibernate.cache: DEBUG
+    org.hibernate.stat: DEBUG
+
+
