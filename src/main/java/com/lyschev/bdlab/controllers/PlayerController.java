@@ -12,6 +12,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@CrossOrigin(origins = "http://localhost:3000/", maxAge = 3600)
 @RestController
 public class PlayerController {
 
@@ -28,10 +29,13 @@ public class PlayerController {
 
     }
 
+
     @GetMapping(value = "/players")
     public Set<PlayerDto> getPlayersByClubName(@RequestParam("clubName") String clubName){
         Set<PlayerEntity> playerEntities = playerRepository.findAllByClubName(clubName);
         return playerEntities.stream().map(playerMapper::toDto).collect(Collectors.toSet());
     }
+
+
 
 }
