@@ -6,8 +6,8 @@ spring:
       ddl-auto: none
   datasource:
     url: jdbc:postgresql://localhost:5432/postgres
-    username: ivanlyschev
-    password: ivan2000
+    username: postgres
+    password: admin
 logging:
   level:
     org.hibernate: INFO
