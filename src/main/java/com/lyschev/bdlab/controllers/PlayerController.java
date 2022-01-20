@@ -29,13 +29,9 @@ public class PlayerController {
 
     }
 
-
     @GetMapping(value = "/players")
     public Set<PlayerDto> getPlayersByClubName(@RequestParam("clubName") String clubName){
         Set<PlayerEntity> playerEntities = playerRepository.findAllByClubName(clubName);
         return playerEntities.stream().map(playerMapper::toDto).collect(Collectors.toSet());
     }
-
-
-
 }
