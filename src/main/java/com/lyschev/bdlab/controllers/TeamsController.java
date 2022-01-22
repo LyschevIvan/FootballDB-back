@@ -48,4 +48,7 @@ public class TeamsController {
         teamRepository.deleteById(id);
     }
 
+    // Post/Get for teams_main
+
+    //Post/Get for teams_sub
 }

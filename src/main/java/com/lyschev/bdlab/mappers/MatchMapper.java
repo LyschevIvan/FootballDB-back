@@ -29,9 +29,9 @@ public class MatchMapper extends AbstractMapper<MatchEntity, MatchDto>{
     @PostConstruct
     public void setupMapper(){
         modelMapper.createTypeMap(MatchEntity.class, MatchDto.class)
-                .addMappings(m -> m.skip(MatchDto::setLeague))
-                .addMappings(m -> m.skip(MatchDto::setTeam1))
-                .addMappings(m -> m.skip(MatchDto::setTeam2))
+                .addMappings(m -> m.skip(MatchDto::setLeague_name))
+                .addMappings(m -> m.skip(MatchDto::setTeam1_id))
+                .addMappings(m -> m.skip(MatchDto::setTeam2_id))
                 .setPostConverter(toDtoConverter());
         modelMapper.createTypeMap(MatchDto.class, MatchEntity.class)
                 .addMappings(m ->m.skip(MatchEntity::setLeague))
@@ -43,16 +43,16 @@ public class MatchMapper extends AbstractMapper<MatchEntity, MatchDto>{
     @Override
     void mapSpecificFields(MatchDto source, MatchEntity destination) {
 
-        destination.setLeague(leagueRepository.findById(source.getLeague().getName()).orElse(null));
-        destination.setTeam1(teamRepository.findById(source.getTeam1().getId()).orElse(null));
-        destination.setTeam2(teamRepository.findById(source.getTeam2().getId()).orElse(null));
+        destination.setLeague(leagueRepository.findById(source.getLeague_name()).orElse(null));
+        destination.setTeam1(teamRepository.findById(source.getTeam1_id()).orElse(null));
+        destination.setTeam2(teamRepository.findById(source.getTeam2_id()).orElse(null));
     }
 
     @Override
     void mapSpecificFields(MatchEntity source, MatchDto destination) {
-        destination.setLeague(source.getLeague());
-        destination.setTeam1(source.getTeam1());
-        destination.setTeam2(source.getTeam2());
+        destination.setLeague_name(source.getLeague().getName());
+        destination.setTeam1_id(source.getTeam1().getId());
+        destination.setTeam2_id(source.getTeam2().getId());
 
     }
 }

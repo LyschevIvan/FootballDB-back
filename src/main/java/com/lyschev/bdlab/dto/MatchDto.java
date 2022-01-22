@@ -1,7 +1,6 @@
 package com.lyschev.bdlab.dto;
 
-import com.lyschev.bdlab.models.LeagueEntity;
-import com.lyschev.bdlab.models.TeamEntity;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,11 +12,11 @@ public class MatchDto implements Dto {
 
     private Integer id;
 
-    private TeamEntity team1;
+    private Integer team1_id;
 
-    private TeamEntity team2;
+    private Integer team2_id;
 
-    private LeagueEntity league;
+    private String league_name;
 
     private Integer score;
 

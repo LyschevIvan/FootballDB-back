@@ -1,6 +1,5 @@
 package com.lyschev.bdlab.dto;
 
-import com.lyschev.bdlab.models.TeamEntity;
 import lombok.Getter;
 import lombok.Setter;
 
