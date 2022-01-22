@@ -10,7 +10,7 @@ import java.time.OffsetDateTime;
 @Entity
 @Setter
 @Getter
-public class MatchEntity {
+public class MatchEntity implements EntityInterface {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "match_id", nullable = false)
