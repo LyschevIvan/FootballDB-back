@@ -3,13 +3,13 @@ package com.lyschev.bdlab.dto;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
+
 @Getter
 @Setter
 public class TeamMainDto implements Dto {
 
-    private Integer id;
-
     private Integer teamId;
 
-    private Integer playerId;
+    private ArrayList<TeamMainPlayerDto> teamMainPlayerDtos;
 }
