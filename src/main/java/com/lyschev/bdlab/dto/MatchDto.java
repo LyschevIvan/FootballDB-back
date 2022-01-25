@@ -22,5 +22,5 @@ public class MatchDto implements Dto {
 
     private Integer tour;
 
-    private OffsetDateTime time;
+    private String time;
 }

@@ -7,10 +7,12 @@ import com.lyschev.bdlab.dto.TeamMainPlayerDto;
 import com.lyschev.bdlab.mappers.TeamMainMapper;
 import com.lyschev.bdlab.mappers.TeamMapper;
 import com.lyschev.bdlab.mappers.Wrappers.TeamMainEntityWrapper;
+import com.lyschev.bdlab.models.PlayerEntity;
 import com.lyschev.bdlab.models.TeamEntity;
 import com.lyschev.bdlab.models.TeamMainEntity;
 import com.lyschev.bdlab.repositoryies.TeamMainRepository;
 import com.lyschev.bdlab.repositoryies.TeamRepository;
+import com.lyschev.bdlab.utils.StatsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -55,9 +57,9 @@ public class TeamsController {
     }
 
     @PostMapping(value = "/teams")
-    public void addTeam(@RequestBody TeamDto teamDto){
+    public int addTeam(@RequestBody TeamDto teamDto){
         TeamEntity team = teamMapper.toEntity(teamDto);
-        teamRepository.save(team);
+        return teamRepository.save(team).getId();
     }
 
     @DeleteMapping(value = "/teams/{id}")
@@ -81,5 +83,13 @@ public class TeamsController {
         return new ResponseEntity<>(teamMainMapper.toDto(new TeamMainEntityWrapper(teamMainEntities)), HttpStatus.OK);
     }
 
+    @GetMapping(value = "/stats/{id}")
+    public ResponseEntity<Integer> getTeamStats(@PathVariable Integer id){
+        TeamEntity team = teamRepository.findById(id).orElse(null);
+        int stat = StatsService.getStats(team);
+        if (stat != 0)
+            return new ResponseEntity<>(stat, HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
     //Post/Get for teams_sub
 }

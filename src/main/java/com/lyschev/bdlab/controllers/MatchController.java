@@ -2,16 +2,21 @@ package com.lyschev.bdlab.controllers;
 
 import com.lyschev.bdlab.dto.MatchDto;
 import com.lyschev.bdlab.mappers.MatchMapper;
+import com.lyschev.bdlab.models.MatchEntity;
 import com.lyschev.bdlab.models.TeamEntity;
 import com.lyschev.bdlab.repositoryies.MatchRepository;
 import com.lyschev.bdlab.repositoryies.TeamRepository;
+import com.lyschev.bdlab.utils.StatsService;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @RestController
 public class MatchController {
@@ -25,16 +30,36 @@ public class MatchController {
     @Autowired
     private MatchMapper matchMapper;
 
-    @GetMapping(value = "/result")
-    public Set<MatchDto> getMatch(@RequestParam("team1") Integer team1_id, @RequestParam("team2") Integer team2_id){
-        TeamEntity team1 = teamRepository.findById(team1_id).orElse(null);
-        TeamEntity team2 = teamRepository.findById(team2_id).orElse(null);
-
-        return matchRepository.findAllByTeam1AndTeam2(team1, team2).stream()
+    @GetMapping(value = "/matches")
+    public Set<MatchDto> getMatch(){
+        return StreamSupport.stream(matchRepository.findAll().spliterator(), false)
                 .map(matchMapper::toDto)
                 .collect(Collectors.toSet());
     }
 
 
+    @PostMapping(value = "/matches")
+    public void postMatch(@RequestBody MatchDto matchDto){
+        MatchEntity match = matchMapper.toEntity(matchDto);
 
+        matchRepository.save(match);
+    }
+
+    @PostMapping(value = "/probability")
+    public ResponseEntity<Float> getProbability(@RequestBody ProbabilityDto probabilityDto){
+        TeamEntity team1 = teamRepository.findById(probabilityDto.getTeam1()).orElse(null);
+        TeamEntity team2 = teamRepository.findById(probabilityDto.getTeam2()).orElse(null);
+        Float probability = StatsService.getProbability(team1, team2);
+        if (probability == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(probability, HttpStatus.OK);
+    }
+
+    @Getter
+    @Setter
+    static class ProbabilityDto{
+        Integer team1;
+        Integer team2;
+    }
 }
